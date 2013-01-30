@@ -2770,7 +2770,41 @@ parsebindings(bindings)
 	newbinding->next = bindinglist;
 	bindinglist = newbinding;
 }
- 
+
+int
+parsedirectionkeys(dirkeys, i)
+    char *dirkeys;
+    unsigned int i;
+{
+    register char *op;
+    register char newkey;
+
+    if ((op = index(dirkeys, ' '))) {
+        *op++ = 0;
+        if(parsedirectionkeys(op, i+1))
+            return 1;
+    }
+
+    if (!*dirkeys)
+        return 0;
+
+    if (i >= strlen(sdir)) {
+		raw_printf("Too many directional keys specified in option.");
+		wait_synch();
+        return 1;
+    }
+
+    newkey = txt2key(dirkeys);
+    if (!newkey) {
+		raw_printf("Bad directional key %s.", bindings);
+		wait_synch();
+        return 1;
+    }
+
+    sdir[i] = newkey;
+    return 0;
+}
+
 void
 parseautocomplete(autocomplete,condition)
      /* closesly follows parsebindings and parseoptions */

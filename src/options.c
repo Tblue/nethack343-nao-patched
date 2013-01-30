@@ -2021,6 +2021,16 @@ goodfruit:
 		return;
 	}
 
+	fullname = "directionkeys";
+	if (match_optname(opts, fullname, 3, TRUE)) {
+		if (negated) bad_negation(fullname, FALSE);
+		else if ((op = string_for_opt(opts, negated)) &&
+				parsedirectionkeys(op, 0)) {
+			badoption(opts);
+		}
+		return;
+	}
+
 	/* WINCAP
 	 * align_status:[left|top|right|bottom] */
 	fullname = "align_status";

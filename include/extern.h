@@ -193,6 +193,7 @@ E void NDECL(sanity_check);
 E void NDECL(commands_init);
 E char* FDECL(stripspace, (char*));
 E void FDECL(parsebindings, (char*));
+E int FDECL(parsedirectionkeys, (char*, unsigned int));
 E void FDECL(parseautocomplete, (char*,boolean));
 E char FDECL(txt2key, (char*));
 E char* FDECL(key2txt, (char, char*));
