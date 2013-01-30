@@ -2796,7 +2796,7 @@ parsedirectionkeys(dirkeys, i)
 
     newkey = txt2key(dirkeys);
     if (!newkey) {
-		raw_printf("Bad directional key %s.", bindings);
+		raw_printf("Bad directional key %s.", dirkeys);
 		wait_synch();
         return 1;
     }
