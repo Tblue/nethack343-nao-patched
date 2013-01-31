@@ -2778,6 +2778,7 @@ parsedirectionkeys(dirkeys, i)
 {
 	register char *op;
 	register char newkey;
+	unsigned int n;
 
 	dirkeys = stripspace(dirkeys);
 
@@ -2790,14 +2791,20 @@ parsedirectionkeys(dirkeys, i)
 	if (!*dirkeys)
 		return 0;
 
-	if (i >= strlen(sdir)) {
-		raw_printf("Too many directional keys specified in option.");
+	n = strlen(sdir);
+	if (i >= n) {
+		raw_printf("More than %u directional keys specified in option.",
+				n);
 		return 1;
 	}
 
 	newkey = txt2key(dirkeys);
 	if (!newkey) {
-		raw_printf("Bad directional key %s.", dirkeys);
+		raw_printf("Directional key %s not recognized.", dirkeys);
+		return 1;
+	}
+	if (newkey < 'a' || newkey > 'z') {
+		raw_printf("Bad directional key %c: Must be lowercase letter.");
 		return 1;
 	}
 
