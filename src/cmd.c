@@ -2801,8 +2801,6 @@ parsedirectionkeys(dirkeys, i)
 		return 1;
 	}
 
-	raw_printf("key %d -> %c (%s)", i, newkey, dirkeys);
-	wait_synch();
 	sdir[i] = newkey;
 	return 0;
 }
