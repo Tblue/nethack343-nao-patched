@@ -2805,7 +2805,7 @@ parsedirectionkeys(dirkeys, i)
 	}
 	if (newkey < 'a' || newkey > 'z') {
 		raw_printf("Bad directional key %s: Must be lowercase letter.",
-                dirkeys);
+				dirkeys);
 		return 1;
 	}
 
