@@ -2024,7 +2024,7 @@ goodfruit:
 	fullname = "directionkeys";
 	if (match_optname(opts, fullname, 3, TRUE)) {
 		if (negated) bad_negation(fullname, FALSE);
-		else if ((op = string_for_opt(opts, negated)) &&
+		else if ((op = string_for_env_opt(opts, negated)) &&
 				parsedirectionkeys(op, 0)) {
 			badoption(opts);
 		}
