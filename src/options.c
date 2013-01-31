@@ -1418,6 +1418,7 @@ boolean tinitial, tfrom_file;
 	boolean negated;
 	int i;
 	const char *fullname;
+	char *tmp;
 
 	initial = tinitial;
 	from_file = tfrom_file;
@@ -2023,11 +2024,23 @@ goodfruit:
 
 	fullname = "directionkeys";
 	if (match_optname(opts, fullname, 3, TRUE)) {
-		if (negated) bad_negation(fullname, FALSE);
-		else if ((op = string_for_env_opt(fullname, opts, negated)) &&
-				parsedirectionkeys(op, 0)) {
-			badoption(opts);
+		if (negated)
+			bad_negation(fullname, FALSE);
+		else if ((op = string_for_env_opt(fullname, opts, negated))) {
+			/* Need to copy option value because parsedirectionkeys()
+			 * modifies it and we want to display nice error messages
+			 * containing the unmodified option value.
+			 */
+			i = strlen(op) + 1;
+			tmp = alloc(i);
+			nmcpy(tmp, op, i);
+
+			if (parsedirectionkeys(tmp, 0))
+				badoption(opts);
+
+			free(tmp);
 		}
+
 		return;
 	}
 
