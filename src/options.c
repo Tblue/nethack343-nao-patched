@@ -2032,7 +2032,7 @@ goodfruit:
 			 * containing the unmodified option value.
 			 */
 			i = strlen(op) + 1;
-			tmp = alloc(i);
+			tmp = (void *)alloc(i);
 			nmcpy(tmp, op, i);
 
 			if (parsedirectionkeys(tmp, 0))
