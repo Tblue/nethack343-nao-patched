@@ -2779,6 +2779,8 @@ parsedirectionkeys(dirkeys, i)
 	register char *op;
 	register char newkey;
 
+	dirkeys = stripspace(dirkeys);
+
 	if ((op = index(dirkeys, ' '))) {
 		*op++ = 0;
 		if(parsedirectionkeys(op, i+1))
@@ -2790,14 +2792,12 @@ parsedirectionkeys(dirkeys, i)
 
 	if (i >= strlen(sdir)) {
 		raw_printf("Too many directional keys specified in option.");
-		wait_synch();
 		return 1;
 	}
 
 	newkey = txt2key(dirkeys);
 	if (!newkey) {
 		raw_printf("Bad directional key %s.", dirkeys);
-		wait_synch();
 		return 1;
 	}
 
