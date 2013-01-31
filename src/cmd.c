@@ -2773,36 +2773,38 @@ parsebindings(bindings)
 
 int
 parsedirectionkeys(dirkeys, i)
-    char *dirkeys;
-    unsigned int i;
+	char *dirkeys;
+	unsigned int i;
 {
-    register char *op;
-    register char newkey;
+	register char *op;
+	register char newkey;
 
-    if ((op = index(dirkeys, ' '))) {
-        *op++ = 0;
-        if(parsedirectionkeys(op, i+1))
-            return 1;
-    }
+	if ((op = index(dirkeys, ' '))) {
+		*op++ = 0;
+		if(parsedirectionkeys(op, i+1))
+			return 1;
+	}
 
-    if (!*dirkeys)
-        return 0;
+	if (!*dirkeys)
+		return 0;
 
-    if (i >= strlen(sdir)) {
+	if (i >= strlen(sdir)) {
 		raw_printf("Too many directional keys specified in option.");
 		wait_synch();
-        return 1;
-    }
+		return 1;
+	}
 
-    newkey = txt2key(dirkeys);
-    if (!newkey) {
+	newkey = txt2key(dirkeys);
+	if (!newkey) {
 		raw_printf("Bad directional key %s.", dirkeys);
 		wait_synch();
-        return 1;
-    }
+		return 1;
+	}
 
-    sdir[i] = newkey;
-    return 0;
+	raw_printf("key %d -> %c (%s)", i, newkey, dirkeys);
+	wait_synch();
+	sdir[i] = newkey;
+	return 0;
 }
 
 void
