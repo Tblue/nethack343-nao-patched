@@ -22,8 +22,8 @@ PSCMD = groff
 # Not appropriate for creating Guidebook.txt.
 # GUIDECMD = cat Guidebook.txt
 # The following works better with groff-1.18, eg on Linux
-# GUIDECMD = tbl tmac.n Guidebook.mn | nroff -c -Tascii | $(COLCMD)
-GUIDECMD = tbl tmac.n Guidebook.mn | nroff | $(COLCMD)
+GUIDECMD = tbl tmac.n Guidebook.mn | nroff -c -Tascii | $(COLCMD)
+#GUIDECMD = tbl tmac.n Guidebook.mn | nroff | $(COLCMD)
 
 # the basic guidebook
 Guidebook:	Guidebook.mn
