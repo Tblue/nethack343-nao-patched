@@ -1730,6 +1730,26 @@ instead of having to define a full graphics set yourself (default off).
 This option also sets up proper handling of graphics
 characters for such terminals, so you should specify it when appropriate
 even if you override the selections with your own graphics strings.
+.lp directionkeys
+Sets the directional keys to use. You can specify up to 10 keys; if you
+specify less, these keys not specified are left at their defaults. The
+first eight keys need to be lowercase letters; the last two keys can
+also be these literal strings:
+.sd
+.si
+<enter> - enter key.
+<space> - space key.
+<esc> - escape key.
+M-c - Meta c, where `c' is some character.
+C-c - Control c, where `c' is some character.
+^c - same as ``C-c''.
+nnn - three-digit decimal ASCII code, where `n' is 0-9.
+.ei
+.ed
+For ``M-c'' and ``C-c'', the `M' and `C' are case-insensitive and the
+hyphen is optional. For a clue in which order to specify the keys, see
+the default value.
+Default \&``h y k u l n j b > <''.
 .lp disclose
 Controls options for disclosing various information when the game ends (defaults
 to all possibilities being disclosed).
