@@ -97,7 +97,7 @@ Guidebook:
 	( cd doc ; $(MAKE) Guidebook )
 
 manpages:
-	( cd doc ; $(MAKE) manpages )
+	( cd doc ; $(MAKE) "PREFIX=$(PREFIX)" manpages )
 
 data: $(GAME)
 	( cd dat ; $(MAKE) data )
