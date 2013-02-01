@@ -15,7 +15,7 @@
 
 # make NetHack
 PREFIX	 = /opt/nethack/nethack.alt.org
-GAME     = nethack.343-nao
+GAME     = nethack
 # GAME     = nethack.prg
 GAMEUID  = games
 GAMEGRP  = games
@@ -35,8 +35,8 @@ DIRPERM  = 0755
 # therefore there should not be anything in GAMEDIR that you want to keep
 # (if there is, you'll have to do the installation by hand or modify the
 # instructions)
-GAMEDIR  = $(PREFIX)/nh343
-VARDIR  = $(GAMEDIR)/var
+GAMEDIR  = $(PREFIX)/var/games/nethack
+VARDIR  = $(GAMEDIR)
 #SHELLDIR = $(PREFIX)/games
 
 # per discussion in Install.X11 and Install.Qt

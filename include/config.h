@@ -386,7 +386,7 @@ typedef unsigned char	uchar;
 #define AUTOPICKUP_EXCEPTIONS  /* exceptions to autopickup */
 
 #define DUMP_LOG        /* Dump game end information to a file */
-#define DUMP_FN "/dgldir/userdata/%N/%n/dumplog/%t.nh343.txt"      /* Fixed dumpfile name, if you want
+/* #define DUMP_FN "/dgldir/userdata/%N/%n/dumplog/%t.nh343.txt" */      /* Fixed dumpfile name, if you want
                                    * to prevent definition by users */
 #define DUMPMSGS 20     /* Number of latest messages in the dump file  */
 
@@ -398,22 +398,22 @@ typedef unsigned char	uchar;
 
 /* Filename for the wizard-mode command for dumping the map data.
    Can be left undefined, in which case the wiz-mode command does nothing. */
-#define MAPDUMP_FN "/dgldir/userdata/%N/%n/nh343.mapdump"
+#define MAPDUMP_FN "%n_mapdump.txt"
 
 /* Filename for where HUPping a game is saved.
    Can be left undefined, in which case HUPping doesn't write the data. */
-#define HUPLIST_FN "/dgldir/userdata/%N/%n/hanguplist.txt"
+/* #define HUPLIST_FN "/dgldir/userdata/%N/%n/hanguplist.txt" */
 
 /* Filename for dgamelaunch extra info field.
    Can be left undefined for not writing extrainfo. */
-#define EXTRAINFO_FN "/dgldir/extrainfo-nh343/%n.extrainfo"
+/* #define EXTRAINFO_FN "/dgldir/extrainfo-nh343/%n.extrainfo" */
 
 #define SHOW_BORN    /* extinct & showborn -patch */
 #define SHOW_EXTINCT
 
 #define SORTLOOT /* sortloot -patch */
 
-#define SIMPLE_MAIL /* dgamelaunch simple mail */
+/* #define SIMPLE_MAIL */ /* dgamelaunch simple mail */
 
 #define PARANOID /* paranoid quit &c */
 
@@ -422,11 +422,11 @@ typedef unsigned char	uchar;
    in one line.  Can be left undefined to disable the feature.
    Requires UNIX
 */
-#define SERVER_ADMIN_MSG "admin_msg"
+/* #define SERVER_ADMIN_MSG "admin_msg" */
 
-#define LIVELOGFILE "livelog"
+/* #define LIVELOGFILE "livelog" */
 
-#define XLOGFILE "xlogfile"  /* even larger logfile */
+/* #define XLOGFILE "xlogfile" */  /* even larger logfile */
 /* #define REALTIME_ON_BOTL */  /* Show elapsed time on bottom line.  Note:
                                  * this breaks savefile compatibility. */
 /* The options in this section require the extended logfile support */
@@ -448,7 +448,7 @@ typedef unsigned char	uchar;
 
 /* Write out player's current location to this file.
    Can be left undefined, which will disable the feature. */
-#define WHEREIS_FILE "whereis/%n.whereis"
+/* #define WHEREIS_FILE "whereis/%n.whereis" */
 
 #define USER_DUNGEONCOLOR
 
