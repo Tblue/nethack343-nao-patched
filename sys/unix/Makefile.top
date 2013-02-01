@@ -14,7 +14,7 @@
 # MAKE = make
 
 # make NetHack
-PREFIX	 = /opt/nethack/nethack.alt.org
+PREFIX	 = /
 GAME     = nethack
 # GAME     = nethack.prg
 GAMEUID  = games
