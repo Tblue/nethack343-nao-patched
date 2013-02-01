@@ -2803,7 +2803,13 @@ parsedirectionkeys(dirkeys, i)
 		raw_printf("Directional key %s not recognized.", dirkeys);
 		return 1;
 	}
-	if (newkey < 'a' || newkey > 'z') {
+
+	/* The first 8 keys are the normal direction keys; they must be lowercase
+	 * letters since the uppercase letters have a special function (run).
+	 *
+	 * The last two keys (down/up) do not need to be restricted.
+	 */
+	if (i < 8 && (newkey < 'a' || newkey > 'z')) {
 		raw_printf("Bad directional key %s: Must be lowercase letter.",
 				dirkeys);
 		return 1;
