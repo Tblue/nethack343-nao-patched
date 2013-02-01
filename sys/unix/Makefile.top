@@ -18,7 +18,7 @@ PREFIX	 = /
 GAME     = nethack
 # GAME     = nethack.prg
 GAMEUID  = games
-GAMEGRP  = games
+GAMEGRP  = bin
 
 # Permissions - some places use setgid instead of setuid, for instance
 # See also the option "SECURE" in include/config.h
