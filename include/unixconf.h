@@ -189,7 +189,7 @@
 #   endif
 #  endif
 # else
-#define DEF_MAILREADER	"/bin/mail"
+#define DEF_MAILREADER	"/usr/bin/mail"
 # endif
 #endif
 
