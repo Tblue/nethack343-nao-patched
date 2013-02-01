@@ -2033,9 +2033,9 @@ goodfruit:
 			 * modifies it and we want to display nice error messages
 			 * containing the unmodified option value.
 			 */
-			i = strlen(op) + 1;
-			tmp = (void *)alloc(i);
-			nmcpy(tmp, op, i);
+			num = strlen(op) + 1;
+			tmp = (void *)alloc(num);
+			nmcpy(tmp, op, num);
 
 			if (parsedirectionkeys(tmp, 0))
 				badoption(opts);
