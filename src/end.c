@@ -191,14 +191,14 @@ dump_exit ()
 void
 mk_dgl_extrainfo()
 {
+#ifndef EXTRAINFO_FN
+    return;
+#else
     FILE *extrai = (FILE *)0;
 #ifdef UNIX
     mode_t eimode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 #endif
     char new_fn[512];
-#ifndef EXTRAINFO_FN
-    return;
-#endif
     Sprintf(new_fn, "%s", dump_format_str(EXTRAINFO_FN));
 
     extrai = fopen(new_fn, "w");
@@ -235,6 +235,7 @@ mk_dgl_extrainfo()
 	fprintf(extrai, "%i|%c %s", sortval, (u.uhave.amulet ? 'A' : ' '), tmpdng);
 	fclose(extrai);
     }
+#endif /* ifdef EXTRAINFO_FN */
 }
 
 void

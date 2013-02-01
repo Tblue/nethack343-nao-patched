@@ -434,7 +434,9 @@ mk_HUPfile(char *fname)
 	chmod(new_dump_fn, dumpmode);
 #endif
 	get_current_ttentry_data(&t0, -1);
+#ifdef XLOGFILE
 	write_xlentry(dump_fp, &t0);
+#endif
 	fclose(dump_fp);
     }
   }
