@@ -191,9 +191,7 @@ dump_exit ()
 void
 mk_dgl_extrainfo()
 {
-#ifndef EXTRAINFO_FN
-    return;
-#else
+#ifdef EXTRAINFO_FN
     FILE *extrai = (FILE *)0;
 #ifdef UNIX
     mode_t eimode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
