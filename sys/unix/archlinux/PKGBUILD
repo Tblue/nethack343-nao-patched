@@ -19,7 +19,6 @@ license=('custom')
 depends=('ncurses' 'gzip')
 makedepends=('git')
 conflicts=('nethack')
-install=nethack.install
 source=("arch-specific.patch")
 
 _gitroot='git://github.com/Tblue/nethack343-nao-patched.git'
