@@ -1,0 +1,84 @@
+# vim:sw=2 ts=4 et
+#
+# Maintainer  : Tilman Blumenbach <tilman AT ax86 DOT net>
+# Contributor : schuay <jakob.gruber@gmail.com>
+# Contributor : kevin <kevin@archlinux.org>
+# Contributor : Christian Schmidt <mucknert@gmx.net>
+# Contributor : Markus Meissner <markus@meissna.de>
+# Contributor : Nick Erdmann <erdmann@date.upb.de>
+
+_real_pkgname=nethack
+pkgname=nethack-nao-patched
+pkgver=3.4.3
+# Based on nethack Arch Linux package, release 7.
+pkgrel=7.1
+pkgdesc='A single player dungeon exploration game (ultra-patched NAO version)'
+arch=('i686' 'x86_64')
+url="http://www.nethack.org/index.html"
+license=('custom')
+depends=('ncurses' 'gzip')
+makedepends=('git')
+conflicts=('nethack')
+install=nethack.install
+source=("arch-specific.patch")
+
+_gitroot='git://github.com/Tblue/nethack343-nao-patched.git'
+_gitname='nethack343-nao-patched'
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+  #
+  # BUILD HERE
+  #
+  patch -Np1 -i "$srcdir/arch-specific.patch"
+
+  # Remove old Makefiles
+  for i in '' dat doc src util; do
+    rm -f "./$i/Makefile"
+  done
+
+  # Copy the new Makefiles
+  sh sys/unix/setup.sh
+
+  # Build it.
+  make
+
+  cd doc
+  make distrib
+}
+  
+package() {
+  cd "$srcdir/$_gitname-build"
+
+  install -dm755 "$pkgdir/usr/share/"{man/man6,doc/nethack}
+  install -dm775 "$pkgdir/var/games/"
+  make "PREFIX=$pkgdir" install manpages
+  sed -e "s|HACKDIR=$pkgdir/|HACKDIR=/|" \
+      -e 's|HACK=$HACKDIR|HACK=/usr/lib/nethack|' \
+      -i "$pkgdir/usr/bin/nethack"
+
+  install -dm755 "$pkgdir/usr/lib/nethack"
+  mv "$pkgdir/var/games/nethack/"{nethack,recover} "$pkgdir/usr/lib/nethack/"
+
+  install -Dm644 doc/Guidebook.txt "$pkgdir/usr/share/doc/nethack/Guidebook.txt"
+      
+  install -Dm644 dat/license "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+md5sums=('2cb9442111f5dd9c0582648393c49db4')

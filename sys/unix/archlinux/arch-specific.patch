@@ -1,0 +1,51 @@
+diff --git a/include/config.h b/include/config.h
+index 306f07d..e3692bf 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -220,7 +220,7 @@
+  * otherwise it will be the current directory.
+  */
+ # ifndef HACKDIR
+-/* #  define HACKDIR "/nh343" */
++#  define HACKDIR "/var/games/nethack"
+ # endif
+ 
+ /*
+diff --git a/sys/unix/Makefile.doc b/sys/unix/Makefile.doc
+index 092c9af..a4a0be1 100644
+--- a/sys/unix/Makefile.doc
++++ b/sys/unix/Makefile.doc
+@@ -44,7 +44,7 @@ Guidebook.dvi:	Guidebook.tex
+ 
+ 
+ GAME	= nethack
+-MANDIR	= $(PREFIX)/usr/man/man6
++MANDIR	= $(PREFIX)/usr/share/man/man6
+ MANEXT	= 6
+ 
+ # manual installation for most BSD-style systems
+diff --git a/sys/unix/Makefile.top b/sys/unix/Makefile.top
+index 84b8e89..7aee980 100644
+--- a/sys/unix/Makefile.top
++++ b/sys/unix/Makefile.top
+@@ -17,15 +17,15 @@
+ PREFIX	 = /
+ GAME     = nethack
+ # GAME     = nethack.prg
+-GAMEUID  = games
+-GAMEGRP  = bin
++GAMEUID  = root
++GAMEGRP  = games
+ 
+ # Permissions - some places use setgid instead of setuid, for instance
+ # See also the option "SECURE" in include/config.h
+-GAMEPERM = 04755
+-FILEPERM = 0644
++GAMEPERM = 02755
++FILEPERM = 0664
+ EXEPERM  = 0755
+-DIRPERM  = 0755
++DIRPERM  = 0775
+ 
+ # GAMEDIR also appears in config.h as "HACKDIR".
+ # VARDIR may also appear in unixconf.h as "VAR_PLAYGROUND" else GAMEDIR
