@@ -1749,7 +1749,7 @@ nnn - three-digit decimal ASCII code, where `n' is 0-9.
 For ``M-c'' and ``C-c'', the `M' and `C' are case-insensitive and the
 hyphen is optional. For a clue in which order to specify the keys, see
 the default value.
-Default \&``h y k u l n j b > <''.
+Default \&``h y k u l n j b > <''. Cannot be set with the `O' command.
 .lp disclose
 Controls options for disclosing various information when the game ends (defaults
 to all possibilities being disclosed).
