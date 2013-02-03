@@ -1,3 +1,27 @@
+This is a modified version of nethack.alt.org's NetHack fork (NB:
+nethack.alt.org is often abbreviated as ``NAO'').
+
+Notable differences to NAO's version are so far:
+ *  Disabled some features that are (in my opinion) only useful on NetHack
+    servers like NAO, but not on mostly single-user systems. They can be
+    enabled again if necessary, of course.
+ *  Reverted Makefiles to (mostly) NetHack defaults (NAO changed some parts).
+ *  If the curses window port is enabled, it is used by default. You can
+    still set the ``windowtype'' option to ``tty'' if you wish to restore the
+    old behaviour.
+ *  Added a ``directionkeys'' option in order to allow changing the directional
+    keys. Useful for people with keyboards that have the `y' and `z' keys
+    swapped; those people may want to add the following to their .nethackrc:
+
+        OPTIONS=directionalkeys:h z
+        BINDINGS=y:zap,Y:cast,^y:suspend
+
+    This will swap the `y' and `z' keys which should make navigation easier.
+ *  Added an Arch Linux PKGBUILD for this git repository.
+
+
+                        - - - - - - - - - - -
+
                 NetHack 3.4.3 -- General information
 
 NetHack 3.4 is an enhancement to the dungeon exploration game NetHack.
