@@ -7,8 +7,8 @@
 # Contributor : Markus Meissner <markus@meissna.de>
 # Contributor : Nick Erdmann <erdmann@date.upb.de>
 
-_real_pkgname=nethack
 pkgname=nethack-nao-patched
+_gitname="${pkgname}"
 pkgver=3.4.3
 # Based on nethack Arch Linux package, release 7.
 pkgrel=7.1
@@ -19,32 +19,16 @@ license=('custom')
 depends=('ncurses' 'gzip')
 makedepends=('git')
 conflicts=('nethack')
-source=("arch-specific.patch")
+source=("arch-specific.patch"
+        "${_gitname}::git://github.com/Tblue/nethack343-nao-patched.git")
 
-_gitroot='git://github.com/Tblue/nethack343-nao-patched.git'
-_gitname='nethack343-nao-patched'
+pkgver() {
+  cd "$srcdir/$_gitname"
+  git describe --always | tr :- _
+}
 
 build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server...."
-
-  if [[ -d "$_gitname" ]]; then
-    cd "$_gitname" && git pull origin
-    msg "The local files are updated."
-  else
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting build..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
-
-  #
-  # BUILD HERE
-  #
+  cd "$srcdir/$_gitname"
   patch -Np1 -i "$srcdir/arch-specific.patch"
 
   # Remove old Makefiles
@@ -63,7 +47,7 @@ build() {
 }
   
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname"
 
   install -dm755 "$pkgdir/usr/share/"{man/man6,doc/nethack}
   install -dm775 "$pkgdir/var/games/"
@@ -80,4 +64,4 @@ package() {
   install -Dm644 dat/license "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
-md5sums=('2cb9442111f5dd9c0582648393c49db4')
+md5sums=('2cb9442111f5dd9c0582648393c49db4' SKIP)
