@@ -28,6 +28,7 @@ const char *goal;
     /* disgusting hack; the alternate selection characters work for any
        getpos call, but they only matter for dowhatis (and doquickwhatis) */
     putstr(tmpwin, 0, "Use m and M to select a monster.");
+    putstr(tmpwin, 0, "Use @ to select yourself.");
     doing_what_is = (goal == what_is_an_unknown_object);
     Sprintf(sbuf, "Type a .%s when you are at the right place.",
             doing_what_is ? " or , or ; or :" : "");
@@ -221,6 +222,10 @@ const char *goal;
 		cy = tmpmon->my;
 		goto nxtc;
 	    }
+	} else if (c == '@') {
+	    cx = u.ux;
+	    cy = u.uy;
+	    goto nxtc;
 	} else {
 	    if (!index(quitchars, c)) {
 		char matching[MAXPCHARS];
@@ -1066,6 +1071,7 @@ static const char * const bogusmons[] = {
         "gazebo",
         "gonzo journalist",
         "gray goo", "magnetic monopole",
+	"ooblecks",
         "heisenbug",
         "lag monster",
         "loan shark",
@@ -1105,6 +1111,8 @@ static const char * const bogusmons[] = {
 	"guillemet",
 	"solidus",
 	"obelus",
+	"miniature blimp",
+	"lungfish",
 
         "apostrophe golem", "Bob the angry flower",
         "bonsai-kitten", "Boxxy", "lonelygirl15",
@@ -1126,7 +1134,7 @@ static const char * const bogusmons[] = {
         "manbearpig",                           /* South Park */
         "ceiling cat", "basement cat",
         "monorail cat",                         /* the Internet is made for cat pix */
-        "rape golem",                           /* schnippi */
+        /*"rape golem",*/                           /* schnippi */
         "tridude",                              /* POWDER */
         "orcus cosmicus",                       /* Radomir Dopieralski */
         "yeek", "quylthulg",
@@ -1146,6 +1154,7 @@ static const char * const bogusmons[] = {
 	"ghoti",
 	"regex engine",
 	"netsplit",
+	"wiki",
 	"peer",
 	"pigasus",
 	"Semigorgon",
@@ -1153,6 +1162,13 @@ static const char * const bogusmons[] = {
 	"conventioneer",
 	"terracotta warrior",
 	"large microbat", "small megabat",
+	"uberhulk",
+	"hearse",
+	"COBOL",
+	"tofurkey",
+	"hippocampus",
+	"hippogriff",
+	"kelpie",
 
 	/* soundex and typos of monsters */
 	"gloating eye",
