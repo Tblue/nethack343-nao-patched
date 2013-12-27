@@ -17,7 +17,6 @@ Notable differences to NAO's version are so far:
         BINDINGS=y:zap,Y:cast,^y:suspend
 
     This will swap the `y' and `z' keys which should make navigation easier.
- *  Added an Arch Linux PKGBUILD for this git repository.
 
 
                         - - - - - - - - - - -
