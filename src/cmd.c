@@ -1607,7 +1607,7 @@ int typ;
       start_menu(win);
 
       any.a_int = 1;
-      add_menu(win, NO_GLYPH, &any, 'a', 0, ATR_NONE, "Name a monster", MENU_UNSELECTED);
+      add_menu(win, NO_GLYPH, &any, 'a', 'C', ATR_NONE, "Name a monster", MENU_UNSELECTED);
 
       any.a_int = 2;
       add_menu(win, NO_GLYPH, &any, 'b', 'y', ATR_NONE, "Name an individual item", MENU_UNSELECTED);
@@ -1938,7 +1938,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"help", "give a help message", dohelp, IFBURIED},
 	{"seetrap", "show the type of a trap", doidtrap, IFBURIED},
 	{"kick", "kick something", dokick, !IFBURIED},
-	{"look", "loot a box on the floor", dolook, IFBURIED},
+	{"look", "look at what is here", dolook, IFBURIED},
 	{"call", "call (name) a particular monster", do_naming_mname, IFBURIED},
 	{"callold", "call (name) a particular monster (vanilla)", do_mname, IFBURIED},
 	{"wait", "rest one move while doing nothing", donull, IFBURIED},

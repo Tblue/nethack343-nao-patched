@@ -1050,8 +1050,8 @@ static const char * const bogusmons[] = {
         "arch-pedant",
         "beluga whale",
         "bluebird of happiness",
-        "bouncing eye", "floating nose",
-        "buffer overflow", "dangling pointer", "walking disk drive",
+        "bouncing eye", "floating nose", "wandering eye",
+        "buffer overflow", "dangling pointer", "walking disk drive", "floating point",
         "cacodemon", "scrag",
         "cardboard golem", "duct tape golem",
         "chess pawn",
@@ -1169,10 +1169,12 @@ static const char * const bogusmons[] = {
 	"hippocampus",
 	"hippogriff",
 	"kelpie",
+	"womble",  /* The Wombles */
+	"fraggle", /* Fraggle Rock */
 
 	/* soundex and typos of monsters */
 	"gloating eye",
-	"flush golem"
+	"flush golem",
 	"martyr orc",
 	"mortar orc",
 	"acute blob",

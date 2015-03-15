@@ -198,6 +198,7 @@ static const char default_menu_cmds[] = {
 	MENU_SELECT_PAGE,
 	MENU_UNSELECT_PAGE,
 	MENU_INVERT_PAGE,
+	MENU_SEARCH,
 	0	/* null terminator */
 };
 
@@ -1209,6 +1210,42 @@ int *color, *attr;
 }
 #endif /* MENU_COLOR */
 
+
+boolean
+toggle_menu_curr(window, curr, lineno, in_view, counting, count)
+winid window;
+tty_menu_item *curr;
+int lineno;
+boolean in_view, counting;
+long count;
+{
+    if (curr->selected) {
+	if (counting && count > 0) {
+	    curr->count = count;
+	    if (in_view) set_item_state(window, lineno, curr);
+	    return TRUE;
+	} else { /* change state */
+	    curr->selected = FALSE;
+	    curr->count = -1L;
+	    if (in_view) set_item_state(window, lineno, curr);
+	    return TRUE;
+	}
+    } else {	/* !selected */
+	if (counting && count > 0) {
+	    curr->count = count;
+	    curr->selected = TRUE;
+	    if (in_view) set_item_state(window, lineno, curr);
+	    return TRUE;
+	} else if (!counting) {
+	    curr->selected = TRUE;
+	    if (in_view) set_item_state(window, lineno, curr);
+	    return TRUE;
+	}
+	/* do nothing counting&&count==0 */
+    }
+    return FALSE;
+}
+
 STATIC_OVL void
 process_menu_window(window, cw)
 winid window;
@@ -1325,14 +1362,14 @@ struct WinDesc *cw;
 #ifndef WIN32CON
 		    if (curr->glyph != NO_GLYPH && iflags.use_menu_glyphs) {
 			int glyph_color = NO_COLOR;
-			int character;
+			glyph_t character;
 			unsigned special; /* unused */
 			/* map glyph to character and color */
 			mapglyph(curr->glyph, &character, &glyph_color, &special, 0, 0);
 
 			print_vt_code(AVTC_GLYPH_START, glyph2tile[curr->glyph]);
 			if (glyph_color != NO_COLOR) term_start_color(glyph_color);
-			putchar(character);
+			pututf8char(character);
 			if (glyph_color != NO_COLOR) term_end_color();
 			print_vt_code(AVTC_GLYPH_END, -1);
 			putchar(' ');
@@ -1357,7 +1394,7 @@ struct WinDesc *cw;
 			  *cp && (int) ttyDisplay->curx < (int) ttyDisplay->cols;
 			  cp++, n++, ttyDisplay->curx++)
 #endif
-			(void) putchar(*cp);
+		    (void) pututf8char((unsigned char) *cp);
 #ifdef MENU_COLOR
 		   if (iflags.use_menu_color && menucolr) {
 		       if (color != NO_COLOR) term_end_color();
@@ -1508,6 +1545,33 @@ struct WinDesc *cw;
 		if (cw->how == PICK_ANY)
 		    invert_all(window, page_start, page_end, 0);
 		break;
+	    case MENU_SEARCH:
+		if (cw->how == PICK_NONE) {
+		    tty_nhbell();
+		    break;
+		} else {
+		    char searchbuf[BUFSZ], tmpbuf[BUFSZ];
+		    boolean on_curr_page = FALSE;
+		    int lineno = 0;
+		    tty_getlin("Search for:", tmpbuf);
+		    if (!tmpbuf || tmpbuf[0] == '\033') break;
+		    Sprintf(searchbuf, "*%s*", tmpbuf);
+		    for (curr = cw->mlist; curr; curr = curr->next) {
+			if (on_curr_page) lineno++;
+			if (curr == page_start)
+			    on_curr_page = TRUE;
+			else if (curr == page_end)
+			    on_curr_page = FALSE;
+			if (curr->identifier.a_void && pmatch(searchbuf, curr->str)) {
+			    toggle_menu_curr(window, curr, lineno, on_curr_page, counting, count);
+			    if (cw->how == PICK_ONE) {
+				finished = TRUE;
+				break;
+			    }
+			}
+		    }
+		}
+		break;
 	    default:
 		if (cw->how == PICK_NONE || !index(resp, morc)) {
 		    /* unacceptable input received */
@@ -1526,27 +1590,7 @@ struct WinDesc *cw;
 			curr != page_end;
 			n++, curr = curr->next)
 		    if (morc == curr->selector) {
-			if (curr->selected) {
-			    if (counting && count > 0) {
-				curr->count = count;
-				set_item_state(window, n, curr);
-			    } else { /* change state */
-				curr->selected = FALSE;
-				curr->count = -1L;
-				set_item_state(window, n, curr);
-			    }
-			} else {	/* !selected */
-			    if (counting && count > 0) {
-				curr->count = count;
-				curr->selected = TRUE;
-				set_item_state(window, n, curr);
-			    } else if (!counting) {
-				curr->selected = TRUE;
-				set_item_state(window, n, curr);
-			    }
-			    /* do nothing counting&&count==0 */
-			}
-
+			toggle_menu_curr(window, curr, n, TRUE, counting, count);
 			if (cw->how == PICK_ONE) finished = TRUE;
 			break;	/* from `for' loop */
 		    }
@@ -1598,7 +1642,7 @@ struct WinDesc *cw;
 		    *cp && (int) ttyDisplay->curx < (int) ttyDisplay->cols;
 		    cp++, ttyDisplay->curx++)
 #endif
-		(void) putchar(*cp);
+	    (void) pututf8char(*cp);
 	    term_end_attr(attr);
 	}
     }
@@ -1853,7 +1897,15 @@ tty_putsym(window, x, y, ch)
     case NHW_MAP:
     case NHW_BASE:
 	tty_curs(window, x, y);
+#ifdef UTF8_GLYPHS
+	if (iflags.UTF8graphics) {
+		pututf8char((unsigned char)ch);
+	} else {
+		(void) putchar(ch);
+	}
+#else
 	(void) putchar(ch);
+#endif
 	ttyDisplay->curx++;
 	cw->curx++;
 	break;
@@ -1977,7 +2029,11 @@ tty_putstr(window, attr, str)
 		cw->cury++;
 		tty_curs(window, cw->curx+1, cw->cury);
 	    }
-	    (void) putchar(*str);
+	    if (iflags.UTF8graphics) {
+		    pututf8char(*str);
+	    } else {
+		    (void) putchar(*str);
+	    }
 	    str++;
 	    ttyDisplay->curx++;
 	}
@@ -2554,7 +2610,7 @@ tty_print_glyph(window, x, y, glyph)
     xchar x, y;
     int glyph;
 {
-    int ch;
+    glyph_t ch;
     boolean reverse_on = FALSE;
     int	    color;
     unsigned special;
@@ -2613,7 +2669,15 @@ tty_print_glyph(window, x, y, glyph)
       xputg(glyph,ch,special);
     else
 #endif
+#ifdef UTF8_GLYPHS
+	if (iflags.UTF8graphics) {
+		pututf8char(get_unicode_codepoint(ch));
+	} else {
+		g_putch(ch);	/* print the character */
+	}
+#else
 	g_putch(ch);		/* print the character */
+#endif
 
     if (reverse_on) {
     	term_end_attr(ATR_INVERSE);
@@ -2706,9 +2770,11 @@ tty_nhgetch()
     if (!i) i = DOESCAPE; /* map NUL to ESC since nethack doesn't expect NUL */
     if (ttyDisplay && ttyDisplay->toplin == 1)
 	ttyDisplay->toplin = 2;
+#ifdef USE_TILES
     tmp = vt_tile_current_window;
     vt_tile_current_window++;
     print_vt_code(AVTC_SELECT_WINDOW, tmp);
+#endif
     return i;
 }
 

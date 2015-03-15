@@ -44,7 +44,7 @@ LINK=$(CC)
 # for UNIX systems
 SYSSRC = ../sys/share/ioctl.c ../sys/share/unixtty.c ../sys/unix/unixmain.c \
 	../sys/unix/unixunix.c ../sys/unix/unixres.c
-SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
+SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o recover.o
 #
 # for Systos
 # SYSSRC = ../sys/atari/tos.c ../sys/share/pcmain.c ../sys/share/pcsys.c \
@@ -334,7 +334,7 @@ HACKCSRC = allmain.c alloc.c apply.c artifact.c attrib.c ball.c bones.c \
 	   rnd.c role.c rumors.c save.c shk.c shknam.c sit.c sounds.c sp_lev.c \
 	   spell.c steal.c steed.c teleport.c timeout.c topten.c track.c trap.c \
 	   u_init.c uhitm.c vault.c version.c vision.c weapon.c were.c wield.c \
-	   windows.c wizard.c worm.c worn.c write.c zap.c
+	   windows.c wizard.c worm.c worn.c write.c zap.c unicode.c
 
 # all operating-system-dependent .c (for dependencies and such)
 SYSCSRC = ../sys/atari/tos.c ../sys/share/pcmain.c ../sys/share/pcsys.c \
@@ -391,7 +391,7 @@ HOBJ = $(FIRSTOBJ) allmain.o alloc.o apply.o artifact.o attrib.o ball.o \
 	role.o rumors.o save.o shk.o shknam.o sit.o sounds.o sp_lev.o spell.o \
 	steal.o steed.o teleport.o timeout.o topten.o track.o trap.o u_init.o \
 	uhitm.o vault.o vision.o vis_tab.o weapon.o were.o wield.o windows.o \
-	wizard.o worm.o worn.o write.o zap.o \
+	wizard.o worm.o worn.o write.o zap.o unicode.o \
 	$(RANDOBJ) $(SYSOBJ) $(WINOBJ) version.o
 # the .o files from the HACKCSRC, SYSSRC, and WINSRC lists
 
@@ -613,6 +613,8 @@ topl.o: ../win/tty/topl.c $(HACK_H) ../include/tcap.h
 wintty.o: ../win/tty/wintty.c $(HACK_H) ../include/dlb.h \
 		../include/patchlevel.h ../include/tcap.h
 	$(CC) $(CFLAGS) -c ../win/tty/wintty.c
+recover.o: ../util/recover.c $(HACK_H)
+	$(CC) $(CFLAGS) -DNO_MAIN -c ../util/recover.c
 cursmain.o: ../win/curses/cursmain.c $(HACK_H) ../include/wincurs.h
 	$(CC) $(CFLAGS) -c ../win/curses/cursmain.c
 curswins.o: ../win/curses/curswins.c $(HACK_H) ../include/func_tab.h \
@@ -825,6 +827,7 @@ track.o: track.c $(HACK_H)
 trap.o: trap.c $(HACK_H)
 u_init.o: u_init.c $(HACK_H)
 uhitm.o: uhitm.c $(HACK_H)
+unicode.o: unicode.c $(HACK_H)
 vault.o: vault.c $(HACK_H) ../include/vault.h
 version.o: version.c $(HACK_H) ../include/date.h ../include/patchlevel.h
 vision.o: vision.c $(HACK_H) ../include/vis_tab.h
